@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es" style="--accent: #A890AB; --accent-soft: #f6f4f7; --orange: #D0A050; --orange-dk: #8d6d36;"><head>
+<html lang="es" style="--accent: #b68fbc; --accent-soft: #f8f4f8; --orange: #ecad41; --orange-dk: #a0762c;"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
@@ -110,6 +110,21 @@ h1{font-size:22px}.sub{font-size:12px}
 .addReturnWrap{margin-top:10px}.optionCard.hasReturn .addReturnWrap{display:none}
 #doc [data-price],#doc #discount,#doc #tax,#doc #depositInput,#doc #netCost,#doc #marginDisplay{font-family:Arial,Helvetica,sans-serif;font-size:13px;font-weight:700;text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
 .optOff{display:none!important}
+#colorPanel{position:fixed;right:283px;bottom:14px;z-index:60;width:230px;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 8px 30px #0003;padding:12px;display:grid;gap:9px;font-size:12px}
+#colorPanel label{display:block;margin:0}
+#colorPanel input[type=color]{display:block;width:100%;height:34px;margin-top:4px;padding:2px;border:1px solid var(--line);border-radius:7px;background:#fff;cursor:pointer}
+#colorPanel .wmBtns{display:flex;gap:6px;flex-wrap:wrap}#colorPanel button{padding:6px 9px;font-size:12px}
+
+#hotels>.optionCard[data-solo="true"] .selWrap{display:none}
+@media print{#hotels[data-estancias="1"] .stayRow{display:none}}
+.incTag{display:inline-block;padding:2px 8px;border:1px solid #9fd3b0;border-radius:12px;font-size:11px;font-weight:700;color:#1b7a3c;cursor:pointer;user-select:none;white-space:nowrap}
+.incTag::before{content:"✔ Incluido"}
+tr.opcional .incTag{border-color:#d3d8e0;color:#8a94a3}
+tr.opcional .incTag::before{content:"Opcional"}
+tr.opcional [data-price]{opacity:.55}
+.modoBtn::before{content:"Usar %"}
+.pct .modoBtn::before{content:"Usar $"}
+.miniBtn{margin-right:4px}
 .selWrap{display:flex;flex-direction:column;align-items:center;gap:4px;margin:0 auto}
 .selTag::before{content:"Opción alternativa";font-size:11px;font-weight:700;color:#8a94a3}
 .optionCard.selected .selTag::before{content:"✔ Incluida en el total";color:#1b7a3c}
@@ -117,6 +132,11 @@ h1{font-size:22px}.sub{font-size:12px}
 .optionCard.selected .selBtn{display:none}
 .selBtn{padding:4px 10px;font-size:11px}
 #flights>.optionCard:only-child .selWrap,#hotels>.optionCard:only-child .selWrap{display:none}
+#flights .selTag::before,#hotels .selTag::before{content:"No incluida en el total"}
+#flights .optionCard.selected .selTag::before,#hotels .optionCard.selected .selTag::before{content:"✔ Incluida en el total"}
+.optionCard:not(.selected) .unselBtn,#flights:not([data-multi="true"]) .unselBtn{display:none}
+.optionCard.selected .unselBtn{display:inline-block}
+#flights:not([data-multi="true"]) .optionCard.selected .unselBtn,#hotels>.optionCard[data-multi-stay="false"] .unselBtn{display:none}
 .addOptRow{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
 #discountBtn.on,#taxBtn.on{display:none}
 .miniBtn{margin-top:4px;padding:3px 9px;font-size:11px}
@@ -167,8 +187,8 @@ h1{font-size:22px}.sub{font-size:12px}
       <div><label class="">Destino</label><div class="f edit" contenteditable="true" data-ph="Cancún, México"></div></div>
       <div><label class="">Fecha de salida</label><div class="f edit" contenteditable="true" data-ph="DD/MM/AAAA"></div></div>
       <div><label class="">Fecha de regreso</label><div class="f edit" contenteditable="true" data-ph="DD/MM/AAAA"></div></div>
-      <div><label class="">Adultos</label><div class="f edit" contenteditable="true" data-pax=""></div></div>
-      <div><label class="">Niños</label><div class="f edit" contenteditable="true" data-pax=""></div></div>
+      <div><label class="">Adultos</label><div class="f edit" contenteditable="true" data-pax="">2</div></div>
+      <div><label class="">Niños</label><div class="f edit" contenteditable="true" data-pax="">0</div></div>
       <div><label class="">Edades de niños</label><div class="f edit" contenteditable="true" data-ph="Ej. 4 y 8 años"></div></div>
       <div><label class="">Asesor / contacto</label><div class="f edit" contenteditable="true" data-ph="Nombre y WhatsApp"></div></div>
     </div>
@@ -176,20 +196,62 @@ h1{font-size:22px}.sub{font-size:12px}
 
   <section class="section">
     <h2 class="">✈️ Vuelos · opciones</h2>
-    <div class="sectionBody" id="flights"></div>
+    <div class="sectionBody" id="flights" data-multi="false"><div class="optionCard selected" data-type="flight"><div class="optionHead"><div class="optionName f edit" contenteditable="true">Opción de vuelo 1</div><span class="badge">VUELO</span></div>
+ <div class="leg"><div class="legHead"><label class="legTitle">Vuelo de ida</label></div>
+  <div class="row">
+   <div><label class="">Aerolínea</label><div class="f edit" contenteditable="true" data-ph="Volaris"></div></div>
+   <div><label class="">Número de vuelo</label><div class="f edit" contenteditable="true" data-ph="Y4 1234"></div></div>
+  </div>
+  <div class="row" style="margin-top:8px">
+   <div><label class="">Origen → destino</label><div class="f edit" contenteditable="true" data-ph="MTY → CUN"></div></div>
+   <div><label class="">Clase</label><div class="f edit" contenteditable="true" data-ph="Económica"></div></div>
+  </div>
+  <div class="row3 row" style="margin-top:8px">
+   <div><label class="">Salida</label><div class="f edit" contenteditable="true" data-ph="DD/MM · HH:MM"></div></div>
+   <div><label class="">Llegada</label><div class="f edit" contenteditable="true" data-ph="DD/MM · HH:MM"></div></div>
+   <div><label class="">Equipaje</label><div class="f edit" contenteditable="true" data-ph="1 maleta de mano + 1 documentada"></div></div>
+  </div>
+  <div class="row" style="margin-top:8px">
+   <div><label class="">Escalas / duración</label><div class="f edit" contenteditable="true" data-ph="Directo · 2 h 30 min"></div></div>
+   <div><label class="">Localizador / notas</label><div class="f edit" contenteditable="true" data-ph="Código de reserva o notas"></div></div>
+  </div></div>
+ <div class="addReturnWrap no-print"><button class="addReturnBtn" onclick="agregarRegreso(this)">＋ Agregar vuelo de regreso</button></div>
+ <div class="priceBox"><div><small class="">Precio de esta opción</small><div class="amount f edit" contenteditable="true" data-price="1" data-ph="0.00">$0.00</div></div><div class="selWrap"><span class="selTag"></span><button class="selBtn no-print" onclick="elegirOpcion(this)">Incluir en el total</button><button class="unselBtn selBtn no-print" onclick="quitarOpcion(this)">Quitar del total</button></div><button class="removeBtn no-print danger" onclick="this.closest('.optionCard').remove();recalcular()">Eliminar</button></div></div></div>
     <div class="addBar no-print"><button onclick="addFlight()">＋ Agregar opción de vuelo</button> <span class="small">Puedes agregar 1, 2 o las opciones que necesites.</span></div>
   </section>
 
   <section class="section">
     <h2 class="">🏨 Hospedaje · opciones</h2>
-    <div class="sectionBody" id="hotels"></div>
+    <div class="sectionBody" id="hotels" data-estancias="1"><div class="optionCard selected" data-type="hotel" data-solo="true" data-multi-stay="false"><div class="optionHead"><div class="optionName f edit" contenteditable="true">Opción de hotel 1</div><span class="badge">HOTEL</span></div>
+ <div class="hotelLayout ">
+ <div class="photoCol"><div class="no-print"><input type="file" accept="image/*" hidden="" onchange="previewPhoto(event,'photo-h-mwab7dsq1')"><button onclick="this.previousElementSibling.click()">📷 Agregar / cambiar foto</button></div>
+ <div class="photoFrame"><img id="photo-h-mwab7dsq1" class="photo empty" alt="Hotel"></div></div>
+ <div class="hotelInfo">
+ <div class="row stayRow">
+  <div><label class="">Estancia (1, 2, 3…)</label><div class="f edit" contenteditable="true" data-stay="" data-ph="1">1</div></div>
+ </div>
+ <div class="row" style="margin-top:8px">
+  <div><label class="">Hotel / categoría</label><div class="f edit" contenteditable="true" data-ph="Hotel Riu Cancún ★★★★★"></div></div>
+  <div><label class="">Habitación</label><div class="f edit" contenteditable="true" data-ph="Doble vista al mar"></div></div>
+ </div>
+ <div class="row" style="margin-top:8px">
+  <div><label class="">Check-in</label><div class="f edit" contenteditable="true" data-ph="DD/MM/AAAA"></div></div>
+  <div><label class="">Check-out</label><div class="f edit" contenteditable="true" data-ph="DD/MM/AAAA"></div></div>
+ </div>
+ <div class="row" style="margin-top:8px">
+  <div><label class="">Noches</label><div class="f edit" contenteditable="true" data-ph="4"></div></div>
+  <div><label class="">Plan de alimentos</label><div class="f edit" contenteditable="true" data-ph="Todo incluido"></div></div>
+ </div>
+ <div style="margin-top:8px"><label class="">Ubicación / amenidades / observaciones</label><div class="f edit" contenteditable="true" data-ph="Zona hotelera, frente al mar, alberca, spa…"></div></div>
+ </div></div>
+ <div class="priceBox"><div><small class="">Total hospedaje</small><div class="amount f edit" contenteditable="true" data-price="1" data-ph="0.00">$0.00</div></div><div class="selWrap"><span class="selTag"></span><button class="selBtn no-print" onclick="elegirOpcion(this)">Incluir en el total</button><button class="unselBtn selBtn no-print" onclick="quitarOpcion(this)">Quitar del total</button></div><button class="removeBtn no-print danger" onclick="this.closest('.optionCard').remove();recalcular()">Eliminar</button></div></div></div>
     <div class="addBar no-print"><button onclick="addHotel()">＋ Agregar opción de hotel</button> <span class="small">Sin límite de opciones. Puedes incluir foto, categoría, alimentos, habitación y precio.</span></div>
   </section>
 
   <section class="section">
     <h2 class="">🚐 Traslados</h2>
     <div class="sectionBody">
-      <table id="transfersTable"><thead><tr><th class="">Fecha</th><th class="">Hora</th><th class="">Servicio / ruta</th><th class="">Detalles</th><th class="">Pax</th><th class="">Precio</th><th class="no-print"></th></tr></thead><tbody></tbody></table>
+      <table id="transfersTable"><thead><tr><th class="">Fecha</th><th class="">Hora</th><th class="">Servicio / ruta</th><th class="">Detalles</th><th class="">Pax</th><th class="">Precio</th><th class="">Incluir</th><th class="no-print"></th></tr></thead><tbody><tr data-type="transfer"><td contenteditable="true" data-ph="DD/MM"></td><td contenteditable="true" data-ph="00:00"></td><td contenteditable="true" data-ph="Aeropuerto → hotel"></td><td contenteditable="true" data-ph="Privado, hasta 4 personas"></td><td contenteditable="true" data-ph="2"></td><td class="money f edit" contenteditable="true" data-price="1" data-ph="0.00">$0.00</td><td><span class="incTag" onclick="alternarOpcional(this)"></span></td><td class="no-print"><button class="danger" onclick="this.closest('tr').remove();recalcular()">✕</button></td></tr><tr data-type="transfer"><td contenteditable="true" data-ph="DD/MM"></td><td contenteditable="true" data-ph="00:00"></td><td contenteditable="true" data-ph="Aeropuerto → hotel"></td><td contenteditable="true" data-ph="Privado, hasta 4 personas"></td><td contenteditable="true" data-ph="2"></td><td class="money f edit" contenteditable="true" data-price="1" data-ph="0.00">$0.00</td><td><span class="incTag" onclick="alternarOpcional(this)"></span></td><td class="no-print"><button class="danger" onclick="this.closest('tr').remove();recalcular()">✕</button></td></tr></tbody></table>
     </div>
     <div class="addBar no-print"><button onclick="addTransfer()">＋ Agregar traslado</button></div>
   </section>
@@ -197,7 +259,7 @@ h1{font-size:22px}.sub{font-size:12px}
   <section class="section">
     <h2 class="">🎟️ Tours, actividades y experiencias</h2>
     <div class="sectionBody">
-      <table id="activitiesTable"><thead><tr><th class="">Fecha</th><th class="">Actividad</th><th class="">Descripción / incluye</th><th class="">Pax</th><th class="">Precio</th><th class="no-print"></th></tr></thead><tbody></tbody></table>
+      <table id="activitiesTable"><thead><tr><th class="">Fecha</th><th class="">Actividad</th><th class="">Descripción / incluye</th><th class="">Pax</th><th class="">Precio</th><th class="">Incluir</th><th class="no-print"></th></tr></thead><tbody><tr data-type="activity"><td contenteditable="true" data-ph="DD/MM"></td><td contenteditable="true" data-ph="Tour a Isla Mujeres"></td><td contenteditable="true" data-ph="Incluye transporte y comida"></td><td contenteditable="true" data-ph="2"></td><td class="money f edit" contenteditable="true" data-price="1" data-ph="0.00">$0.00</td><td><span class="incTag" onclick="alternarOpcional(this)"></span></td><td class="no-print"><button class="danger" onclick="this.closest('tr').remove();recalcular()">✕</button></td></tr></tbody></table>
     </div>
     <div class="addBar no-print"><button onclick="addActivity()">＋ Agregar actividad</button></div>
   </section>
@@ -205,7 +267,7 @@ h1{font-size:22px}.sub{font-size:12px}
   <section class="section">
     <h2 class="">🛡️ Seguro, extras y otros servicios</h2>
     <div class="sectionBody">
-      <table id="extrasTable"><thead><tr><th class="">Concepto</th><th class="">Detalles</th><th class="">Precio</th><th class="no-print"></th></tr></thead><tbody></tbody></table>
+      <table id="extrasTable"><thead><tr><th class="">Concepto</th><th class="">Detalles</th><th class="">Precio</th><th class="">Incluir</th><th class="no-print"></th></tr></thead><tbody><tr data-type="extra"><td contenteditable="true" data-ph="Seguro de viaje"></td><td contenteditable="true" data-ph="Cobertura médica hasta USD 50,000"></td><td class="money f edit" contenteditable="true" data-price="1" data-ph="0.00">$0.00</td><td><span class="incTag" onclick="alternarOpcional(this)"></span></td><td class="no-print"><button class="danger" onclick="this.closest('tr').remove();recalcular()">✕</button></td></tr></tbody></table>
     </div>
     <div class="addBar no-print"><button onclick="addExtra()">＋ Agregar servicio / extra</button></div>
   </section>
@@ -223,6 +285,7 @@ h1{font-size:22px}.sub{font-size:12px}
           <div class="lineItem"><span>Subtotal</span><strong id="subtotal">$0.00</strong></div>
           <div class="lineItem optOff" id="discountRow"><span>Descuento</span><strong id="discountDisplay">$0.00</strong></div>
           <div class="lineItem optOff" id="taxRow"><span>Impuestos / cargos adicionales</span><strong id="taxDisplay">$0.00</strong></div>
+          <div class="lineItem optOff" id="optRow" style="color:#8a94a3"><span>Servicios opcionales (no incluidos)</span><strong id="sumOptional">$0.00</strong></div>
         </div>
         <div class="totalCard">
           <div class="muted">TOTAL PROPUESTO</div>
@@ -236,9 +299,9 @@ h1{font-size:22px}.sub{font-size:12px}
       <div class="addOptRow no-print" id="addOptRow"><button id="discountBtn" onclick="opcionPrecio('discount',true)">＋ Agregar descuento</button><button id="taxBtn" onclick="opcionPrecio('tax',true)">＋ Agregar impuestos / cargos</button></div>
       <div class="grid grid4" style="margin-top:12px">
         <div><label>Moneda (MXN, USD, EUR…)</label><div class="f edit" contenteditable="true" id="currency" data-ph="MXN">MXN</div></div>
-        <div class="optOff" id="discountWrap"><label>Descuento</label><div class="f edit" contenteditable="true" id="discount" data-number="" data-ph="0.00">0</div><button class="no-print miniBtn" onclick="opcionPrecio('discount',false)">✕ Quitar</button></div>
-        <div class="optOff" id="taxWrap"><label>Impuestos / cargos</label><div class="f edit" contenteditable="true" id="tax" data-number="" data-ph="0.00">0</div><button class="no-print miniBtn" onclick="opcionPrecio('tax',false)">✕ Quitar</button></div>
-        <div><label>Anticipo</label><div class="f edit" contenteditable="true" id="depositInput" data-number="" data-ph="0.00">0</div></div>
+        <div class="optOff" id="discountWrap"><label>Descuento</label><div class="f edit" contenteditable="true" id="discount" data-number="" data-ph="0.00">$0.00</div><button class="no-print miniBtn modoBtn" onclick="modoPorcentaje('discount')"></button><button class="no-print miniBtn" onclick="opcionPrecio('discount',false)">✕ Quitar</button></div>
+        <div class="optOff" id="taxWrap"><label>Impuestos / cargos</label><div class="f edit" contenteditable="true" id="tax" data-number="" data-ph="0.00">$0.00</div><button class="no-print miniBtn modoBtn" onclick="modoPorcentaje('tax')"></button><button class="no-print miniBtn" onclick="opcionPrecio('tax',false)">✕ Quitar</button></div>
+        <div id="depositWrap"><label>Anticipo</label><div class="f edit" contenteditable="true" id="depositInput" data-number="" data-ph="0.00">$0.00</div><button class="no-print miniBtn modoBtn" onclick="modoPorcentaje('deposit')"></button></div>
       </div>
       
     </div>
@@ -247,15 +310,23 @@ h1{font-size:22px}.sub{font-size:12px}
   <section class="section">
     <h2 class="">📌 Qué incluye / qué no incluye</h2>
     <div class="sectionBody grid grid2">
-      <div><label class="">Incluye</label><div class="f edit" contenteditable="true" style="min-height:90px;white-space:pre-wrap"></div></div>
-      <div><label class="">No incluye</label><div class="f edit" contenteditable="true" style="min-height:90px;white-space:pre-wrap"></div></div>
+      <div><label class="">Incluye</label><div class="f edit" contenteditable="true" style="min-height:90px;white-space:pre-wrap">• Vuelos según opción seleccionada
+• Hospedaje según opción seleccionada
+• Traslados indicados
+• Servicios expresamente descritos en esta cotización</div></div>
+      <div><label class="">No incluye</label><div class="f edit" contenteditable="true" style="min-height:90px;white-space:pre-wrap">• Servicios no mencionados
+• Gastos personales
+• Propinas, impuestos locales o cargos no especificados
+• Cualquier concepto sujeto a disponibilidad no confirmado</div></div>
     </div>
   </section>
 
   <section class="section">
     <h2 class="">📝 Notas, condiciones y próximos pasos</h2>
     <div class="sectionBody">
-      <div class="note f edit" contenteditable="true" style="min-height:90px;white-space:pre-wrap"></div>
+      <div class="note f edit" contenteditable="true" style="min-height:90px;white-space:pre-wrap">Esta cotización es informativa y no constituye una reservación. Tarifas, disponibilidad, horarios, impuestos y condiciones pueden cambiar hasta el momento de confirmar y emitir los servicios.
+
+Para confirmar tu viaje, indica la opción seleccionada y realiza el pago/anticipo acordado con tu asesor.</div>
     </div>
   </section>
 
@@ -268,7 +339,7 @@ h1{font-size:22px}.sub{font-size:12px}
     </div>
   </section>
 
-  <div class="footer">Documento generado por <span class="f" data-keep="" data-ph="Nombre de la agencia" contenteditable="true"></span> · Cotización <span class="f" data-ph="IT-0001" contenteditable="true"></span></div>
+  <div class="footer">Documento generado por &nbsp;· Cotización <span class="f" data-ph="IT-0001" contenteditable="true"></span></div>
 </main>
 
 <script>
@@ -321,7 +392,7 @@ function addFlight(data={}){
  box.innerHTML=`<div class="optionHead"><div class="optionName f edit" contenteditable="true">${esc(data.name||'Opción de vuelo '+id)}</div><span class="badge">VUELO</span></div>
  ${legHTML(data,'Vuelo de ida',false)}
  <div class="addReturnWrap no-print"><button class="addReturnBtn" onclick="agregarRegreso(this)">＋ Agregar vuelo de regreso</button></div>
- <div class="priceBox"><div><small>Precio de esta opción</small><div class="amount f edit" contenteditable="true" data-price="1">${esc(data.price||'0')}</div></div><div class="selWrap"><span class="selTag"></span><button class="selBtn no-print" onclick="elegirOpcion(this)">Incluir en el total</button></div><button class="removeBtn no-print danger" onclick="this.closest('.optionCard').remove();recalcular()">Eliminar</button></div>`;
+ <div class="priceBox"><div><small>Precio de esta opción</small><div class="amount f edit" contenteditable="true" data-price="1">${esc(data.price||'0')}</div></div><div class="selWrap"><span class="selTag"></span><button class="selBtn no-print" onclick="elegirOpcion(this)">Incluir en el total</button><button class="unselBtn selBtn no-print" onclick="quitarOpcion(this)">Quitar del total</button></div><button class="removeBtn no-print danger" onclick="this.closest('.optionCard').remove();recalcular()">Eliminar</button></div>`;
  document.getElementById('flights').appendChild(box); activarCampos(box); recalcular();
 }
 function addHotel(data={}){
@@ -332,7 +403,10 @@ function addHotel(data={}){
  <div class="photoCol"><div class="no-print">${imgInput(ph)}<button onclick="this.previousElementSibling.click()">📷 Agregar / cambiar foto</button></div>
  <div class="photoFrame"><img id="${ph}" class="photo ${data.photo?'':'empty'}" ${data.photo?`src="${data.photo}"`:''} alt="Hotel"></div></div>
  <div class="hotelInfo">
- <div class="row">
+ <div class="row stayRow">
+  <div><label>Estancia (1, 2, 3…)</label><div class="f edit" contenteditable="true" data-stay data-ph="1">${esc(data.stay||'1')}</div></div>
+ </div>
+ <div class="row" style="margin-top:8px">
   <div><label>Hotel / categoría</label><div class="f edit" contenteditable="true">${esc(data.hotel||'')}</div></div>
   <div><label>Habitación</label><div class="f edit" contenteditable="true">${esc(data.room||'')}</div></div>
  </div>
@@ -346,22 +420,22 @@ function addHotel(data={}){
  </div>
  <div style="margin-top:8px"><label>Ubicación / amenidades / observaciones</label><div class="f edit" contenteditable="true">${esc(data.notes||'')}</div></div>
  </div></div>
- <div class="priceBox"><div><small>Total hospedaje</small><div class="amount f edit" contenteditable="true" data-price="1">${esc(data.price||'0')}</div></div><div class="selWrap"><span class="selTag"></span><button class="selBtn no-print" onclick="elegirOpcion(this)">Incluir en el total</button></div><button class="removeBtn no-print danger" onclick="this.closest('.optionCard').remove();recalcular()">Eliminar</button></div>`;
- document.getElementById('hotels').appendChild(box); activarCampos(box); recalcular();
+ <div class="priceBox"><div><small>Total hospedaje</small><div class="amount f edit" contenteditable="true" data-price="1">${esc(data.price||'0')}</div></div><div class="selWrap"><span class="selTag"></span><button class="selBtn no-print" onclick="elegirOpcion(this)">Incluir en el total</button><button class="unselBtn selBtn no-print" onclick="quitarOpcion(this)">Quitar del total</button></div><button class="removeBtn no-print danger" onclick="this.closest('.optionCard').remove();recalcular()">Eliminar</button></div>`;
+ document.getElementById('hotels').appendChild(box); activarCampos(box); ordenarHoteles();recalcular();
 }
 function addTransfer(data={}){
  const tr=document.createElement('tr'); tr.dataset.type='transfer';
- tr.innerHTML=`<td contenteditable="true">${esc(data.date||'')}</td><td contenteditable="true">${esc(data.time||'')}</td><td contenteditable="true">${esc(data.service||'')}</td><td contenteditable="true">${esc(data.details||'')}</td><td contenteditable="true">${esc(data.pax||'')}</td><td class="money f edit" contenteditable="true" data-price="1">${esc(data.price||'0')}</td><td class="no-print"><button class="danger" onclick="this.closest('tr').remove();recalcular()">✕</button></td>`;
+ tr.innerHTML=`<td contenteditable="true">${esc(data.date||'')}</td><td contenteditable="true">${esc(data.time||'')}</td><td contenteditable="true">${esc(data.service||'')}</td><td contenteditable="true">${esc(data.details||'')}</td><td contenteditable="true">${esc(data.pax||'')}</td><td class="money f edit" contenteditable="true" data-price="1">${esc(data.price||'0')}</td><td><span class="incTag" onclick="alternarOpcional(this)"></span></td><td class="no-print"><button class="danger" onclick="this.closest('tr').remove();recalcular()">✕</button></td>`;
  document.querySelector('#transfersTable tbody').appendChild(tr);activarCampos(tr);recalcular();
 }
 function addActivity(data={}){
  const tr=document.createElement('tr'); tr.dataset.type='activity';
- tr.innerHTML=`<td contenteditable="true">${esc(data.date||'')}</td><td contenteditable="true">${esc(data.name||'')}</td><td contenteditable="true">${esc(data.details||'')}</td><td contenteditable="true">${esc(data.pax||'')}</td><td class="money f edit" contenteditable="true" data-price="1">${esc(data.price||'0')}</td><td class="no-print"><button class="danger" onclick="this.closest('tr').remove();recalcular()">✕</button></td>`;
+ tr.innerHTML=`<td contenteditable="true">${esc(data.date||'')}</td><td contenteditable="true">${esc(data.name||'')}</td><td contenteditable="true">${esc(data.details||'')}</td><td contenteditable="true">${esc(data.pax||'')}</td><td class="money f edit" contenteditable="true" data-price="1">${esc(data.price||'0')}</td><td><span class="incTag" onclick="alternarOpcional(this)"></span></td><td class="no-print"><button class="danger" onclick="this.closest('tr').remove();recalcular()">✕</button></td>`;
  document.querySelector('#activitiesTable tbody').appendChild(tr);activarCampos(tr);recalcular();
 }
 function addExtra(data={}){
  const tr=document.createElement('tr'); tr.dataset.type='extra';
- tr.innerHTML=`<td contenteditable="true">${esc(data.name||'')}</td><td contenteditable="true">${esc(data.details||'')}</td><td class="money f edit" contenteditable="true" data-price="1">${esc(data.price||'0')}</td><td class="no-print"><button class="danger" onclick="this.closest('tr').remove();recalcular()">✕</button></td>`;
+ tr.innerHTML=`<td contenteditable="true">${esc(data.name||'')}</td><td contenteditable="true">${esc(data.details||'')}</td><td class="money f edit" contenteditable="true" data-price="1">${esc(data.price||'0')}</td><td><span class="incTag" onclick="alternarOpcional(this)"></span></td><td class="no-print"><button class="danger" onclick="this.closest('tr').remove();recalcular()">✕</button></td>`;
  document.querySelector('#extrasTable tbody').appendChild(tr);activarCampos(tr);recalcular();
 }
 const EJ_LABEL={'cliente':'Nombre del cliente','destino':'Cancún, México','fecha de salida':'DD/MM/AAAA','fecha de regreso':'DD/MM/AAAA','edades de niños':'Ej. 4 y 8 años','asesor / contacto':'Nombre y WhatsApp','aerolínea':'Volaris','número de vuelo':'Y4 1234','origen → destino':'MTY → CUN','clase':'Económica','salida':'DD/MM · HH:MM','llegada':'DD/MM · HH:MM','equipaje':'1 maleta de mano + 1 documentada','escalas / duración':'Directo · 2 h 30 min','localizador / notas':'Código de reserva o notas','hotel / categoría':'Hotel Riu Cancún ★★★★★','habitación':'Doble vista al mar','check-in':'DD/MM/AAAA','check-out':'DD/MM/AAAA','noches':'4','plan de alimentos':'Todo incluido','ubicación / amenidades / observaciones':'Zona hotelera, frente al mar, alberca, spa…'};
@@ -386,17 +460,29 @@ function opcionPrecio(t,on){
  ['Wrap','Row'].forEach(k=>document.getElementById(t+k)?.classList.toggle('optOff',!on));
  document.getElementById(t+'Btn')?.classList.toggle('on',on);
  const campo=document.getElementById(t);
- if(!on&&campo){campo.textContent='0';formatearPrecios()}
+ if(!on&&campo){document.getElementById(t+'Wrap')?.classList.remove('pct');campo.textContent='0';formatearPrecios()}
  const fila=document.getElementById('addOptRow');
  if(fila)fila.style.display=(document.getElementById('discountBtn')?.classList.contains('on')&&document.getElementById('taxBtn')?.classList.contains('on'))?'none':'';
  recalcular();if(on&&campo)campo.focus();
 }
 function reiniciarOpciones(root=document){
  ['discount','tax'].forEach(t=>{['Wrap','Row'].forEach(k=>root.querySelector('#'+t+k)?.classList.add('optOff'));root.querySelector('#'+t+'Btn')?.classList.remove('on')});
+ ['discount','tax','deposit'].forEach(t=>root.querySelector('#'+t+'Wrap')?.classList.remove('pct'));
  root.querySelector('#addOptRow')?.style.removeProperty('display');
 }
-function formatearPrecios(root=document){root.querySelectorAll?.(PRECIO_SEL).forEach(e=>{e.setAttribute('data-ph','0.00');if(e!==document.activeElement)e.textContent=money(aNumero(e.textContent))})}
+function fmtCampo(el){const w=el.closest('#discountWrap,#taxWrap,#depositWrap'),v=aNumero(el.textContent);return(w&&w.classList.contains('pct'))?(Math.min(v,100)+'%'):money(v)}
+function modoPorcentaje(t){
+ const w=document.getElementById(t+'Wrap');if(!w)return;
+ w.classList.toggle('pct');
+ const f=document.getElementById(t==='deposit'?'depositInput':t);if(f){f.textContent=String(aNumero(f.textContent));formatearPrecios()}
+ recalcular();
+}
+function formatearPrecios(root=document){root.querySelectorAll?.(PRECIO_SEL).forEach(e=>{e.setAttribute('data-ph','0.00');if(e!==document.activeElement)e.textContent=fmtCampo(e)})}
 document.addEventListener('keydown',e=>{if((esPrecio(e.target)||e.target.id==='currency')&&e.key==='Enter')e.preventDefault()});
+document.addEventListener('beforeinput',e=>{if(e.target.matches?.('[data-stay]')&&e.inputType==='insertText'&&e.data&&!/^[0-9]+$/.test(e.data))e.preventDefault()});
+document.addEventListener('keydown',e=>{if(e.target.matches?.('[data-stay]')&&e.key==='Enter')e.preventDefault()});
+document.addEventListener('input',e=>{const el=e.target;if(!el.matches?.('[data-stay]'))return;const c=el.textContent.replace(/\D/g,'').slice(0,2);if(c!==el.textContent){el.textContent=c;cursorAlFinal(el)}});
+document.addEventListener('focusout',e=>{const el=e.target;if(!el.matches?.('[data-stay]'))return;el.textContent=String(Math.max(1,parseInt(el.textContent)||1));ordenarHoteles();recalcular()});
 document.addEventListener('beforeinput',e=>{if(e.target.id==='currency'&&e.inputType==='insertText'&&e.data&&!/^[a-zA-Z]+$/.test(e.data))e.preventDefault()});
 document.addEventListener('input',e=>{const el=e.target;if(el.id!=='currency')return;const c=el.textContent.replace(/[^a-zA-Z]/g,'').toUpperCase().slice(0,3);if(c!==el.textContent){el.textContent=c;cursorAlFinal(el)}});
 document.addEventListener('focusout',e=>{if(e.target.id==='currency'){e.target.textContent=codigoMoneda();formatearPrecios();recalcular()}});
@@ -404,11 +490,11 @@ document.addEventListener('beforeinput',e=>{if(esPrecio(e.target)&&e.inputType==
 document.addEventListener('paste',e=>{if(!esPrecio(e.target))return;e.preventDefault();const t=limpiarPrecio((e.clipboardData||window.clipboardData).getData('text'));if(t)document.execCommand('insertText',false,t)});
 document.addEventListener('input',e=>{const el=e.target;if(!esPrecio(el))return;const c=limpiarPrecio(el.textContent);if(c!==el.textContent){el.textContent=c;cursorAlFinal(el)}});
 document.addEventListener('focusin',e=>{const el=e.target;if(!esPrecio(el))return;const v=aNumero(el.textContent);el.textContent=v?String(v):'';cursorAlFinal(el);setTimeout(()=>{if(document.activeElement===el&&el.textContent){const g=getSelection(),r=document.createRange();r.selectNodeContents(el);g.removeAllRanges();g.addRange(r)}},0)});
-document.addEventListener('focusout',e=>{const el=e.target;if(!esPrecio(el))return;el.textContent=money(aNumero(el.textContent));recalcular()});
+document.addEventListener('focusout',e=>{const el=e.target;if(!esPrecio(el))return;el.textContent=fmtCampo(el);recalcular()});
 const TXT_SEL='h1,h2,label,th,.sub,.brand,.badge,.small,.footer,.priceBox small';
 function textosEditables(root=document){
  if(LOCKED)return;
- root.querySelectorAll(TXT_SEL).forEach(e=>{if(e.closest('#totales,.toolbar,button,#wmPanel'))return;e.classList.add('t');e.setAttribute('contenteditable','true')});
+ root.querySelectorAll(TXT_SEL).forEach(e=>{if(e.closest('#totales,.toolbar,button,#wmPanel,#colorPanel'))return;e.classList.add('t');e.setAttribute('contenteditable','true')});
 }
 function migrarEncabezado(){
  const o=document.querySelector('#doc .quoteNo');if(!o)return;
@@ -418,22 +504,52 @@ function migrarEncabezado(){
 function activarCampos(root=document){ponerEjemplos(root);textosEditables(root);formatearPrecios(root);
  root.querySelectorAll?.('[contenteditable="true"]').forEach(e=>e.addEventListener('input',recalcular));
 }
+const claveEstancia=c=>parseInt(c.querySelector('[data-stay]')?.textContent)||1;
 function asegurarSeleccion(){
- ['#flights','#hotels'].forEach(q=>{const c=[...document.querySelectorAll(q+'>.optionCard')];if(!c.length)return;const ok=c.find(x=>x.classList.contains('selected'))||c[0];c.forEach(x=>x.classList.toggle('selected',x===ok))});
+ const v=document.querySelectorAll('#flights>.optionCard');
+ if(v.length){const n=[...v].filter(x=>x.classList.contains('selected')).length;if(!n)v[0].classList.add('selected');document.getElementById('flights').dataset.multi=(n>1)?'true':'false'}
+ const hs=[...document.querySelectorAll('#hotels>.optionCard')];if(!hs.length)return;
+ const grupos={};
+ hs.filter(c=>c.querySelector('[data-stay]')).forEach(c=>{(grupos[claveEstancia(c)]=grupos[claveEstancia(c)]||[]).push(c)});
+ Object.values(grupos).forEach(g=>{const sel=g.filter(x=>x.classList.contains('selected'));if(!sel.length){g[0].classList.add('selected');sel.push(g[0])}g.forEach(x=>{x.dataset.solo=g.length===1?'true':'false';x.dataset.multiStay=sel.length>1?'true':'false'})});
+ if(!hs.some(x=>x.classList.contains('selected')))hs[0].classList.add('selected');
+ document.getElementById('hotels').dataset.estancias=Object.keys(grupos).length||1;
 }
-function elegirOpcion(btn){const card=btn.closest('.optionCard');[...card.parentElement.children].forEach(x=>x.classList.toggle('selected',x===card));recalcular()}
+function ordenarHoteles(){
+ const c=document.getElementById('hotels');if(!c)return;
+ const hs=[...c.querySelectorAll(':scope>.optionCard')];
+ const ord=hs.map((x,i)=>[x,x.querySelector('[data-stay]')?claveEstancia(x):0,i]).sort((a,b)=>a[1]-b[1]||a[2]-b[2]);
+ if(ord.some((o,i)=>o[0]!==hs[i]))ord.forEach(o=>c.appendChild(o[0]));
+}
+function alternarOpcional(el){el.closest('tr').classList.toggle('opcional');recalcular()}
+function elegirOpcion(btn){btn.closest('.optionCard').classList.add('selected');recalcular()}
+function quitarOpcion(btn){
+ const card=btn.closest('.optionCard'),h=!!card.querySelector('[data-stay]');
+ const inc=[...card.parentElement.children].filter(x=>x.classList.contains('selected')&&(!h||(x.querySelector('[data-stay]')&&claveEstancia(x)===claveEstancia(card))));
+ if(inc.length>1){card.classList.remove('selected');recalcular()}
+}
 function sumPrices(sel){return [...document.querySelectorAll(sel)].reduce((a,e)=>a+(parseFloat(e.textContent.replace(/[^0-9.\-]/g,''))||0),0)}
+function modoPct(t){return !!document.getElementById(t+'Wrap')?.classList.contains('pct')}
 function recalcular(){
  asegurarSeleccion();
- const a=sumPrices('#flights .optionCard.selected [data-price]'),h=sumPrices('#hotels .optionCard.selected [data-price]'),t=sumPrices('#transfersTable [data-price]'),ac=sumPrices('#activitiesTable [data-price]'),x=sumPrices('#extrasTable [data-price]');
- const sub=a+h+t+ac+x, dis=num('discount'),tax=num('tax'),total=Math.max(0,sub-dis+tax),dep=num('depositInput'),pax=Math.max(1,[...document.querySelectorAll('[data-pax]')].reduce((s,e)=>s+(parseFloat(e.textContent)||0),0));
+ const a=sumPrices('#flights .optionCard.selected [data-price]'),h=sumPrices('#hotels .optionCard.selected [data-price]'),t=sumPrices('#transfersTable tr:not(.opcional) [data-price]'),ac=sumPrices('#activitiesTable tr:not(.opcional) [data-price]'),x=sumPrices('#extrasTable tr:not(.opcional) [data-price]'),op=sumPrices('#transfersTable tr.opcional [data-price],#activitiesTable tr.opcional [data-price],#extrasTable tr.opcional [data-price]');
+ const sub=a+h+t+ac+x,dn=num('discount'),tn=num('tax'),pd=modoPct('discount'),pt=modoPct('tax');
+ const D=b=>pd?b*Math.min(dn,100)/100:dn,T=b=>pt?b*Math.min(tn,100)/100:tn,calc=b=>{const d=D(b);return Math.max(0,b-d+T(Math.max(0,b-d)))};
+ const dis=D(sub),tax=T(Math.max(0,sub-dis)),total=calc(sub),pdp=modoPct('deposit'),dnp=num('depositInput'),dep=pdp?total*Math.min(dnp,100)/100:dnp;
+ const pax=Math.max(1,[...document.querySelectorAll('[data-pax]')].reduce((s,e)=>s+(parseFloat(e.textContent)||0),0));
+ const pc=(p,n)=>p?' ('+Math.min(n,100)+'%)':'',cod=codigoMoneda();
  document.getElementById('sumFlights').textContent=money(a);document.getElementById('sumHotels').textContent=money(h);document.getElementById('sumTransfers').textContent=money(t);document.getElementById('sumActivities').textContent=money(ac);document.getElementById('sumExtras').textContent=money(x);
- document.getElementById('subtotal').textContent=money(sub);document.getElementById('discountDisplay').textContent=money(dis);document.getElementById('taxDisplay').textContent=money(tax);document.getElementById('total').textContent=money(total)+' '+codigoMoneda();
- document.getElementById('perPerson').textContent=money(total/pax)+' '+codigoMoneda();document.getElementById('deposit').textContent=money(dep)+' '+codigoMoneda();document.getElementById('balance').textContent=money(Math.max(0,total-dep))+' '+codigoMoneda();
- const pos=q=>{const p=[...document.querySelectorAll(q)].map(e=>aNumero(e.textContent)).filter(v=>v>0);return p.length?[Math.min(...p),Math.max(...p)]:[0,0]};
- const [fMin,fMax]=pos('#flights [data-price]'),[hMin,hMax]=pos('#hotels [data-price]'),fijo=t+ac+x;
- const tMin=Math.max(0,fijo+fMin+hMin-dis+tax),tMax=Math.max(0,fijo+fMax+hMax-dis+tax),rr=document.getElementById('rangeRow');
- if(rr){rr.classList.toggle('optOff',!(tMax>tMin));document.getElementById('rangeMin').textContent=money(tMin);document.getElementById('rangeMax').textContent=money(tMax)+' '+codigoMoneda()}
+ document.getElementById('subtotal').textContent=money(sub);document.getElementById('discountDisplay').textContent=money(dis)+pc(pd,dn);document.getElementById('taxDisplay').textContent=money(tax)+pc(pt,tn);document.getElementById('total').textContent=money(total)+' '+cod;
+ document.getElementById('perPerson').textContent=money(total/pax)+' '+cod;document.getElementById('deposit').textContent=money(dep)+' '+cod+pc(pdp,dnp);document.getElementById('balance').textContent=money(Math.max(0,total-dep))+' '+cod;
+ const orow=document.getElementById('optRow');if(orow){orow.classList.toggle('optOff',!(op>0));document.getElementById('sumOptional').textContent=money(op)}
+ const rg=(q,n)=>{const p=[...document.querySelectorAll(q+' [data-price]')].map(e=>aNumero(e.textContent)).filter(v=>v>0).sort((u,v)=>u-v),k=Math.max(1,n);return [p.slice(0,k).reduce((u,v)=>u+v,0),p.slice(-k).reduce((u,v)=>u+v,0)]};
+ const nf=document.querySelectorAll('#flights>.optionCard.selected').length,nh=document.querySelectorAll('#hotels>.optionCard.selected').length;
+ const [fMin,fMax]=rg('#flights',nf),fijo=t+ac+x;
+ let hMin,hMax;
+ if(document.querySelector('#hotels [data-stay]')){const g={};document.querySelectorAll('#hotels>.optionCard').forEach(c=>{if(!c.querySelector('[data-stay]'))return;const o=g[claveEstancia(c)]=g[claveEstancia(c)]||{p:[],n:0};o.p.push(aNumero(c.querySelector('[data-price]')?.textContent));if(c.classList.contains('selected'))o.n++});hMin=0;hMax=0;Object.values(g).forEach(o=>{const p=o.p.filter(v=>v>0).sort((u,v)=>u-v),k=Math.max(1,o.n);hMin+=p.slice(0,k).reduce((u,v)=>u+v,0);hMax+=p.slice(-k).reduce((u,v)=>u+v,0)})}
+ else [hMin,hMax]=rg('#hotels',nh);
+ const tMin=calc(fijo+fMin+hMin),tMax=calc(fijo+fMax+hMax),rr=document.getElementById('rangeRow');
+ if(rr){rr.classList.toggle('optOff',!(tMax>tMin));document.getElementById('rangeMin').textContent=money(tMin);document.getElementById('rangeMax').textContent=money(tMax)+' '+cod}
  const cost=num('netCost'),md=document.getElementById('marginDisplay');if(md)md.textContent=money(total-cost);
 }
 function guardar(){recalcular();try{localStorage.setItem(KEY,document.getElementById('doc').innerHTML);estado('Borrador guardado en este navegador.')}catch(e){estado('No se pudo guardar: el navegador se quedó sin espacio (fotos muy pesadas).')}}
@@ -446,7 +562,7 @@ function pedirNombre(sugerido){
  if(r===null)return null;
  return PREFIJO_ARCHIVO+(limpiarNombre(r)||'sin_nombre');
 }
-function descargarHTML(){const nom=pedirNombre(document.querySelector('[data-field="quoteNo"]')?.textContent.trim()||'');if(nom===null)return;document.getElementById('wmPanel')?.remove();recalcular();const copy='<!DOCTYPE html>\n'+document.documentElement.outerHTML;const b=new Blob([copy],{type:'text/html;charset=utf-8'}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=nom+'.html';a.click();URL.revokeObjectURL(a.href);estado('Copia HTML descargada.')}
+function descargarHTML(){const nom=pedirNombre(document.querySelector('[data-field="quoteNo"]')?.textContent.trim()||'');if(nom===null)return;document.getElementById('wmPanel')?.remove();document.getElementById('colorPanel')?.remove();recalcular();const copy='<!DOCTYPE html>\n'+document.documentElement.outerHTML;const b=new Blob([copy],{type:'text/html;charset=utf-8'}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=nom+'.html';a.click();URL.revokeObjectURL(a.href);estado('Copia HTML descargada.')}
 function exportarJSON(){const b=new Blob([JSON.stringify({v:1,html:document.getElementById('doc').innerHTML,theme:getTheme()},null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='cotizacion_itinera.json';a.click();URL.revokeObjectURL(a.href);estado('JSON exportado.')}
 function importarJSON(ev){const f=ev.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const d=JSON.parse(r.result);document.getElementById('doc').innerHTML=d.html;if(d.theme){setTheme(d.theme);guardarWM()}postRestore();estado('Datos importados.')}catch(e){estado('El archivo no es válido.')}ev.target.value=''};r.readAsText(f)}
 function cargarLogo(ev){const f=ev.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{document.getElementById('logoBox').innerHTML='<img src="'+r.result+'" alt="Logo">';localStorage.setItem('logo-itinera',r.result);ev.target.value='';estado('Logo aplicado.');};r.readAsDataURL(f)}
@@ -454,7 +570,25 @@ function getTheme(){const g=v=>(S.getPropertyValue(v)||getComputedStyle(document
 function setTheme(t){Object.entries({'--accent':t.acc,'--accent-soft':t.accs,'--orange':t.org,'--orange-dk':t.orgd,'--wm':t.wm,'--wm-op':t.wmo,'--wm-size':t.wms}).forEach(([k,v])=>{if(v)S.setProperty(k,v)});syncWM()}
 function oscurecer(hex,f){const n=parseInt(hex.slice(1),16);return '#'+[16,8,0].map(s=>Math.round(((n>>s)&255)*f).toString(16).padStart(2,'0')).join('')}
 function aclarar(hex,f){const n=parseInt(hex.slice(1),16);return '#'+[16,8,0].map(s=>{const v=(n>>s)&255;return Math.round(v+(255-v)*f).toString(16).padStart(2,'0')}).join('')}
-function cambiarColor(){const c=prompt('Color principal de la marca (código hex):',S.getPropertyValue('--accent')||'#101b3c');if(!c||!/^#[0-9a-f]{6}$/i.test(c.trim()))return;S.setProperty('--accent',c.trim());S.setProperty('--accent-soft',aclarar(c.trim(),.90));const a=prompt('Color de realce:',S.getPropertyValue('--orange')||'#dc9860');if(a&&/^#[0-9a-f]{6}$/i.test(a.trim())){S.setProperty('--orange',a.trim());S.setProperty('--orange-dk',oscurecer(a.trim(),.68))}localStorage.setItem('tema-cotizador-itinera',JSON.stringify(getTheme()));estado('Colores aplicados.')}
+function normHex(v){v=(v||'').trim();return /^#[0-9a-f]{6}$/i.test(v)?v.toLowerCase():'#000000'}
+function cambiarColor(){
+  const old=document.getElementById('colorPanel');if(old){old.remove();return}
+  const C=getComputedStyle(document.documentElement),acc=normHex(C.getPropertyValue('--accent')),org=normHex(C.getPropertyValue('--orange'));
+  const p=document.createElement('div');p.id='colorPanel';p.className='no-print';
+  p.innerHTML=`<b>🎨 Colores de la marca</b><label>Color principal<input type="color" id="colAcc" value="${acc}" oninput="aplicarColores()"></label><label>Color de realce<input type="color" id="colOrg" value="${org}" oninput="aplicarColores()"></label><div class="wmBtns"><button onclick="restablecerColores()">Restablecer colores</button><button onclick="cambiarColor()">Cerrar</button></div>`;
+  document.body.appendChild(p);
+}
+function aplicarColores(){
+  const a=document.getElementById('colAcc').value,o=document.getElementById('colOrg').value;
+  S.setProperty('--accent',a);S.setProperty('--accent-soft',aclarar(a,.90));S.setProperty('--orange',o);S.setProperty('--orange-dk',oscurecer(o,.68));
+  localStorage.setItem('tema-cotizador-itinera',JSON.stringify(getTheme()));estado('Colores aplicados.');
+}
+function restablecerColores(){
+  ['--accent','--accent-soft','--orange','--orange-dk'].forEach(v=>S.removeProperty(v));
+  const C=getComputedStyle(document.documentElement),a=document.getElementById('colAcc'),o=document.getElementById('colOrg');
+  if(a)a.value=normHex(C.getPropertyValue('--accent'));if(o)o.value=normHex(C.getPropertyValue('--orange'));
+  localStorage.setItem('tema-cotizador-itinera',JSON.stringify(getTheme()));estado('Colores restablecidos.');
+}
 function marcaAgua(){
  const old=document.getElementById('wmPanel');if(old){old.remove();return}
  const C=getComputedStyle(document.documentElement),op=Math.round((parseFloat(C.getPropertyValue('--wm-op'))||.1)*100),sz=parseInt(C.getPropertyValue('--wm-size'))||42;
@@ -467,7 +601,7 @@ function wmUsarLogo(){const l=document.querySelector('#logoBox img')?.src;if(!l)
 function wmQuitar(){S.setProperty('--wm','none');syncWM();guardarWM();estado('Marca de agua desactivada.')}
 function restablecerMarca(){
   if(!confirm('¿Restablecer logo, colores y marca de agua a los valores predeterminados?\nLos datos escritos no se borran.'))return;
-  document.getElementById('wmPanel')?.remove();
+  document.getElementById('wmPanel')?.remove();document.getElementById('colorPanel')?.remove();
   for(let i=S.length-1;i>=0;i--){const p=S[i];if(p.startsWith('--'))S.removeProperty(p)}
   document.getElementById('logoBox').innerHTML="<div class=\"brand\">ITINERA<small>TRAVEL AGENCY</small>";
   try{['tema-cotizador-itinera','logo-itinera',WMKEY()].forEach(k=>localStorage.removeItem(k))}catch(e){}
@@ -505,7 +639,7 @@ function exportarCliente(personalizada){
    clon.querySelectorAll('#doc #flights,#doc #hotels,#doc tbody').forEach(e=>e.innerHTML='');const cu=clon.querySelector('#currency');if(cu)cu.textContent='MXN';reiniciarOpciones(clon);
  }
  clon.querySelectorAll('#doc .t').forEach(e=>{e.removeAttribute('contenteditable');e.classList.remove('t')});
- clon.querySelector('#costoInterno')?.remove();clon.querySelector('#wmPanel')?.remove();
+ clon.querySelector('#costoInterno')?.remove();clon.querySelector('#wmPanel')?.remove();clon.querySelector('#colorPanel')?.remove();
  const script=clon.querySelector('script:last-of-type');
  const lock=`<script>(function(){const blocked=['exportarJSON','importarJSON','cargarLogo','cambiarColor','restablecerMarca','exportarCliente'];${personalizada?'':'blocked.push("marcaAgua","aplicarWM","cargarWMArchivo","guardarWM","wmUsarLogo","wmQuitar","wmAjustar")'};function nope(){try{estado('Esta parte de la plantilla está bloqueada.')}catch(e){}}blocked.forEach(n=>{if(typeof window[n]==='function')window[n]=nope});window.__borrar=function(){localStorage.removeItem('cliente-cotizador-'+document.title)};window.guardar=function(){localStorage.setItem('cliente-cotizador-'+document.title,document.getElementById('doc').innerHTML);estado('Borrador guardado.')};window.restaurar=function(){const d=localStorage.getItem('cliente-cotizador-'+document.title);if(!d){estado('No hay borrador guardado.');return}document.getElementById('doc').innerHTML=d;postRestore();estado('Borrador restaurado.')};})();<\/script>`;
  if(script){script.textContent=script.textContent.replace('const LOCKED=false','const LOCKED=true');script.insertAdjacentHTML('afterend',lock)}
